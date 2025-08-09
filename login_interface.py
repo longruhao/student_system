@@ -1,24 +1,21 @@
 import json
 import time
-from student_system import data
 import student_management_system
 import student_entertainment_system
 
 
-def load_info(filename='data.json'):
-    global data, user_list
+def load_info():
+    global user_list
     try:
-        with open(filename, 'r') as f:
-            data = json.load(f)
-            user_list = data['login_data']
+        with open('data.json', 'r') as f:
+            user_list = json.load(f)
     except FileNotFoundError:
         user_list = []
 
 
-def save_info(filename='data.json'):
-    with open(filename, 'w') as f:
-        data['login_data'] = user_list
-        json.dump(data, f, indent=4)
+def save_info():
+    with open('data.json', 'w') as f:
+        json.dump(user_list, f, indent=4)
 
 
 def print_info():
@@ -117,7 +114,3 @@ def start_system():
             break
         else:
             print('您输入的是非法值, 请校验后重新输入!\n')
-
-
-if __name__ == '__main__':
-    start_system()

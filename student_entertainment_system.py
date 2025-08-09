@@ -39,15 +39,17 @@ def oral_arithmetic():
     else:
         print('您输入的是非法值, 请校验后重新输入!\n')
         return
-    num_str = input('请输入您要运算的任意个数字, 数字之间用一个空格隔开, 首尾均不需空格: ')
+    num_str = input('请输入您要运算的任意个非负整数, 数字之间用一个空格隔开, 首尾均不需空格: ')
     num_lst = num_str.split(' ')
     bool_lst = list(map(str.isdigit, num_lst))
     if all(bool_lst):
-        answer = input('请输入您的运算结果: ')
-        if answer.isdigit():
+        try:
+            answer = int(input('请输入您的运算结果: '))
+        except ValueError:
+            print('您输入的值不合法, 请校验后重新输入!\n')
+        else:
             num_lst1 = list(map(int, num_lst))
             result = calculator(func, num_lst1)
-            result = str(result)
             if answer == result:
                 print('恭喜你, 您的答案正确!')
             else:
@@ -61,8 +63,6 @@ def oral_arithmetic():
             else:
                 expr = ' // '.join(num_lst)
             print(f'{expr} = {result}\n')
-        else:
-            print('您输入的值不合法, 请校验后重新输入!\n')
     else:
         print('您输入的数字格式或内容不合规则, 请校验后重新输入!\n')
 
@@ -88,9 +88,11 @@ def guess_numbers():
     print('电脑随机生成 1 ~ 100 之间的一个数, 快来猜猜看吧!')
     num = random.randint(1, 100)
     while True:
-        my_num = input('请输入您要猜的数字: ')
-        if my_num.isdigit():
-            my_num = int(my_num)
+        try:
+            my_num = int(input('请输入您要猜的数字: '))
+        except ValueError:
+            print('您输入的值不合法, 请校验后重新输入!')
+        else:
             if num > my_num:
                 print('您猜小了!')
             elif num < my_num:
@@ -98,8 +100,6 @@ def guess_numbers():
             else:
                 print('恭喜你, 猜中了!\n')
                 break
-        else:
-            print('您输入的值不合法, 请校验后重新输入!')
 
 
 def guess_prime_numbers():

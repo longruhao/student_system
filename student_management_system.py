@@ -33,26 +33,20 @@
 """
 import json
 import time
-from student_system import data
 
 
-def load_info(filename='data.json'):
-    global data, stu_list
+def load_info():
+    global stu_list
     try:
-        with open(filename, 'r') as f:
-            data = json.load(f)
-            if 'student_info' in data:
-                stu_list = data['student_info']
-            else:
-                stu_list = []
+        with open('student.json', 'r') as f:
+            stu_list = json.load(f)
     except FileNotFoundError:
         stu_list = []  # 文件不存在时初始化为空列表
 
 
-def save_info(filename='data.json'):
-    with open(filename, 'w') as f:
-        data['student_info'] = stu_list
-        json.dump(data, f, indent=4)  # indent 参数增加可读性
+def save_info():
+    with open('student.json', 'w') as f:
+        json.dump(stu_list, f, indent=4)  # indent 参数增加可读性
 
 
 def print_info():
@@ -84,39 +78,35 @@ def add_info():
 
 def delete_info():
     while True:
-        try:
-            n = int(input('您要根据学号还是姓名删除, 请输入对应数字 => 1 学号/ 2 姓名: '))
-        except ValueError:
-            print('您输入的是非法值, 请重新输入!')
-        else:
-            if n == 1:
-                id = input('请输入您要删除的学生学号: ')
-                for d in stu_list:
-                    if d['id'] == id:
-                        stu_list.remove(d)
-                        print(f'学号为 {id} 的学生信息已删除!')
-                        break
-                else:
-                    print(f'学号 {id} 不存在, 请校验后重新输入!')
-                print()
-                break
-            elif n == 2:
-                name = input('请输入您要删除的学生姓名: ')
-                # 定义标记变量flag, 表示: 是否有删除学生, 默认为False(没有删除); True(有删除).
-                flag = False
-                for d in stu_list[:]:
-                    if d['name'] == name:
-                        stu_list.remove(d)
-                        # 删除学生则修改标记变量的值为True
-                        flag = True
-                if not flag:
-                    print(f'姓名 {name} 不存在, 请校验后重新输入!')
-                else:
-                    print(f'姓名为 {name} 的学生信息已删除!')
-                print()
-                break
+        n = input('您要根据学号还是姓名删除, 请输入对应数字 => 1 学号/ 2 姓名: ')
+        if n == '1':
+            id = input('请输入您要删除的学生学号: ')
+            for d in stu_list:
+                if d['id'] == id:
+                    stu_list.remove(d)
+                    print(f'学号为 {id} 的学生信息已删除!')
+                    break
             else:
-                print('您输入的数字不合法, 请校验后重新输入!')
+                print(f'学号 {id} 不存在, 请校验后重新输入!')
+            print()
+            break
+        elif n == '2':
+            name = input('请输入您要删除的学生姓名: ')
+            # 定义标记变量flag, 表示: 是否有删除学生, 默认为False(没有删除); True(有删除).
+            flag = False
+            for d in stu_list[:]:
+                if d['name'] == name:
+                    stu_list.remove(d)
+                    # 删除学生则修改标记变量的值为True
+                    flag = True
+            if not flag:
+                print(f'姓名 {name} 不存在, 请校验后重新输入!')
+            else:
+                print(f'姓名为 {name} 的学生信息已删除!')
+            print()
+            break
+        else:
+            print('您输入的是非法值, 请重新输入!')
 
 
 def update_info():
@@ -134,34 +124,30 @@ def update_info():
 
 def search_info():
     while True:
-        try:
-            n = int(input('您要根据学号还是姓名查询, 请输入对应数字 => 1 学号/ 2 姓名: '))
-        except ValueError:
-            print('您输入的是非法值, 请重新输入!')
-        else:
-            if n == 1:
-                id = input('请输入您要查询的学生学号: ')
-                for d in stu_list:
-                    if d['id'] == id:
-                        print(f"学号: {d['id']}, 姓名: {d['name']}, 手机号: {d['tel']}")
-                        break
-                else:
-                    print(f'学号 {id} 不存在, 请校验后重新输入!')
-                print()
-                break
-            elif n == 2:
-                name = input('请输入您要查询的学生姓名: ')
-                flag = False
-                for d in stu_list:
-                    if d['name'] == name:
-                        print(f"学号: {d['id']}, 姓名: {d['name']}, 手机号: {d['tel']}")
-                        flag = True
-                if not flag:
-                    print(f'姓名 {name} 不存在, 请校验后重新输入!')
-                print()
-                break
+        n = input('您要根据学号还是姓名查询, 请输入对应数字 => 1 学号/ 2 姓名: ')
+        if n == '1':
+            id = input('请输入您要查询的学生学号: ')
+            for d in stu_list:
+                if d['id'] == id:
+                    print(f"学号: {d['id']}, 姓名: {d['name']}, 手机号: {d['tel']}")
+                    break
             else:
-                print('您输入的数字不合法, 请校验后重新输入!')
+                print(f'学号 {id} 不存在, 请校验后重新输入!')
+            print()
+            break
+        elif n == '2':
+            name = input('请输入您要查询的学生姓名: ')
+            flag = False
+            for d in stu_list:
+                if d['name'] == name:
+                    print(f"学号: {d['id']}, 姓名: {d['name']}, 手机号: {d['tel']}")
+                    flag = True
+            if not flag:
+                print(f'姓名 {name} 不存在, 请校验后重新输入!')
+            print()
+            break
+        else:
+            print('您输入的是非法值, 请重新输入!')
 
 
 def search_all():
@@ -177,25 +163,21 @@ def start_system():
     load_info()
     while True:
         print_info()
-        try:
-            n = int(input('请输入您要操作的数字: '))
-        except ValueError:
-            print(f'您输入的是非法值, 请重新输入!\n')
+        n = input('请输入您要操作的数字: ')
+        if n == '1':
+            add_info()
+        elif n == '2':
+            delete_info()
+        elif n == '3':
+            update_info()
+        elif n == '4':
+            search_info()
+        elif n == '5':
+            search_all()
+        elif n == '6':
+            save_info()
+            print('正在退出学生管理系统, 期待下次再见!\n')
+            time.sleep(2)
+            break
         else:
-            if n == 1:
-                add_info()
-            elif n == 2:
-                delete_info()
-            elif n == 3:
-                update_info()
-            elif n == 4:
-                search_info()
-            elif n == 5:
-                search_all()
-            elif n == 6:
-                save_info()
-                print('正在退出学生管理系统, 期待下次再见!\n')
-                time.sleep(2)
-                break
-            else:
-                print('您输入的数字不合法, 请校验后重新输入!\n')
+            print(f'您输入的是非法值, 请重新输入!\n')
